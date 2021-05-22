@@ -28,9 +28,9 @@ Route::get('/', function () {
 
 
 Route::prefix('task')->group(function () {
-    Route::get('/', [TaskController::class , 'index']);
+    Route::get('/', [TaskController::class , 'index'])->name('task.index');
 
-    Route::delete('/destroy/{task}' ,
+    Route::get('/destroy/{task}' ,
                     [TaskController::class , 'destroy'])->name('task.destroy');
 
     Route::get('/edit/{task}' ,

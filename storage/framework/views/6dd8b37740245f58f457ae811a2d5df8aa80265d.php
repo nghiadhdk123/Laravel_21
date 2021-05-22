@@ -68,10 +68,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="task-name" class="col-sm-3 control-label">Deadline</label>
+                        <label for="task-name" class="col-sm-3 control-label">Mô tả</label>
 
                         <div class="col-sm-6">
-                            <input type="text" name="deadline" id="task-deadline" class="form-control" value="<?php echo e(old('task')); ?>">
+                            <input type="text" name="content" id="task-content" class="form-control" value="<?php echo e(old('task')); ?>">
                         </div>
                     </div>
 
@@ -97,11 +97,14 @@
                 <table class="table table-striped task-table">
                     <thead>
                     <th>Tên công việc</th>
+                    <th>Mô tả</th>
                     <th>&nbsp;</th>
                     </thead>
                     <tbody>
+                    <?php $__currentLoopData = $task; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
-                        <td class="table-text"><div>Làm bài tập Laravel </div></td>
+                        <td class="table-text"><div><?php echo e($value->name); ?></div></td>
+                        <td class="table-text"><div><?php echo e($value->content); ?></div></td>
                         <!-- Task Complete Button -->
                         <td>
                             <a href="<?php echo e(route('task.complete', ['task'=>200])); ?>" type="submit" class="btn btn-success">
@@ -121,51 +124,9 @@
                                 </button>
                             </form>
                         </td>
-                    </tr>
-                    <tr>
-                        <td class="table-text"><div>Làm bài tập PHP  </div></td>
-                        <!-- Task Complete Button -->
-                        <td>
-                            <a href="<?php echo e(route('task.complete', ['task'=>500])); ?>" type="submit" class="btn btn-success">
-                                <i class="fa fa-btn fa-check"></i>Hoàn thành
-                            </a>
-                        </td>
-                        <!-- Task Delete Button -->
-                        <td>
-                            <form action="<?php echo e(url('tasks/delete/400')); ?>" method="POST">
-                                <?php echo e(csrf_field()); ?>
-
-                                <?php echo e(method_field('DELETE')); ?>
-
-
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fa fa-btn fa-trash"></i>Xoá
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="table-text"><div><strike>Làm project Laravel </strike></div></td>
-                        <!-- Task Complete Button -->
-                        <td>
-                            <a href="<?php echo e(route('task.recomplete', ['task'=>50])); ?>" type="submit" class="btn btn-success">
-                                <i class="fa fa-btn fa-refresh"></i>Làm lại
-                            </a>
-                        </td>
-                        <!-- Task Delete Button -->
-                        <td>
-                            <form action="<?php echo e(url('tasks/delete/500')); ?>" method="POST">
-                                <?php echo e(csrf_field()); ?>
-
-                                <?php echo e(method_field('DELETE')); ?>
-
-
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fa fa-btn fa-trash"></i>Xoá
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
+                    </tr><!-- End -->
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    
                     </tbody>
                 </table>
             </div>

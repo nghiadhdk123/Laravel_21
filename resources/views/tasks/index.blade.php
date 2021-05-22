@@ -67,10 +67,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="task-name" class="col-sm-3 control-label">Deadline</label>
+                        <label for="task-name" class="col-sm-3 control-label">Mô tả</label>
 
                         <div class="col-sm-6">
-                            <input type="text" name="deadline" id="task-deadline" class="form-control" value="{{ old('task') }}">
+                            <input type="text" name="content" id="task-content" class="form-control" value="{{ old('task') }}">
                         </div>
                     </div>
 
@@ -96,11 +96,14 @@
                 <table class="table table-striped task-table">
                     <thead>
                     <th>Tên công việc</th>
+                    <th>Mô tả</th>
                     <th>&nbsp;</th>
                     </thead>
                     <tbody>
+                    @foreach($task as $value)
                     <tr>
-                        <td class="table-text"><div>Làm bài tập Laravel </div></td>
+                        <td class="table-text"><div>{{ $value->name }}</div></td>
+                        <td class="table-text"><div>{{ $value->content }}</div></td>
                         <!-- Task Complete Button -->
                         <td>
                             <a href="{{ route('task.complete', ['task'=>200]) }}" type="submit" class="btn btn-success">
@@ -118,47 +121,9 @@
                                 </button>
                             </form>
                         </td>
-                    </tr>
-                    <tr>
-                        <td class="table-text"><div>Làm bài tập PHP  </div></td>
-                        <!-- Task Complete Button -->
-                        <td>
-                            <a href="{{ route('task.complete', ['task'=>500]) }}" type="submit" class="btn btn-success">
-                                <i class="fa fa-btn fa-check"></i>Hoàn thành
-                            </a>
-                        </td>
-                        <!-- Task Delete Button -->
-                        <td>
-                            <form action="{{ url('tasks/delete/400') }}" method="POST">
-                                {{ csrf_field() }}
-                                {{ method_field('DELETE') }}
-
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fa fa-btn fa-trash"></i>Xoá
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="table-text"><div><strike>Làm project Laravel </strike></div></td>
-                        <!-- Task Complete Button -->
-                        <td>
-                            <a href="{{ route('task.recomplete', ['task'=>50]) }}" type="submit" class="btn btn-success">
-                                <i class="fa fa-btn fa-refresh"></i>Làm lại
-                            </a>
-                        </td>
-                        <!-- Task Delete Button -->
-                        <td>
-                            <form action="{{ url('tasks/delete/500') }}" method="POST">
-                                {{ csrf_field() }}
-                                {{ method_field('DELETE') }}
-
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fa fa-btn fa-trash"></i>Xoá
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
+                    </tr><!-- End -->
+                    @endforeach
+                    
                     </tbody>
                 </table>
             </div>

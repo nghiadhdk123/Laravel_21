@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Task;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -14,9 +15,15 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        echo 'Task index <br>';
-        echo 'a = '. $request->get('a');
-        return view('tasks.index');
+        // echo 'Task index <br>';
+        // echo 'a = '. $request->get('a');
+        $tasks = Task::all();
+        foreach ($tasks as $task){
+            echo $task->name;
+         }
+        return view('tasks.index', [
+            'task'=>$tasks
+        ]);
     }
 
     /**
@@ -37,16 +44,26 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //  $name = $request->get('name');
+          $name = $request->get(key:'name');
+          $content = $request->get(key:'content');
+
+          $task = new Task();
+          $task->name = $name;
+          $task->content = $content;
+          $task->status = 1;
+          $task->deadline = '2021-5-19 21:50:00';
+          $task->save();
+
+          return redirect()->route(route:'task.index');
+
         //  $deadline = $request->get('deadline');
 
         //  dd($name);
         //  echo $name;
         //  echo $deadline;
         
-        $all = $request->except(['_token']);;
-        // var_dump($all);
-        dd($all);
+        // $all = $request->except(['_token']);;
+        // dd($all);
     }
 
     /**
@@ -57,7 +74,9 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        echo "SHOW ID = " .$id;
+        // echo "SHOW ID = " .$id;
+        $task = Task::find($id);
+        dd($task);
     }
 
     /**
@@ -101,7 +120,10 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        $all =  "DELETE task = " .$id;
-        dd($all);
+        // $all =  "DELETE task = " .$id;
+        // dd($all);
+        $task = Task::find($id);
+        $task->delete();
+        return redirect()->route(route:'task.index');
     }
 }
