@@ -35,6 +35,9 @@ Route::prefix('task')->group(function () {
 
     Route::get('/edit/{task}' ,
                 [TaskController::class , 'edit'])->name('task.edit');
+
+    Route::match(['put','patch'],'/update/{task}' ,
+                [TaskController::class , 'update'])->name('task.update');
     
     Route::get('/create' ,
                 [TaskController::class , 'create'])->name('task.create');

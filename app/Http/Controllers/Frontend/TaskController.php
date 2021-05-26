@@ -17,7 +17,7 @@ class TaskController extends Controller
     {
         // echo 'Task index <br>';
         // echo 'a = '. $request->get('a');
-        $tasks = Task::all();
+        $tasks = Task::orderBy('id','desc')->get();
         foreach ($tasks as $task){
             echo $task->name;
          }
@@ -33,7 +33,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        echo "EDIT FUNCTION CREATE ";
+        return view('tasks.form_Create');
     }
 
     /**
@@ -46,10 +46,12 @@ class TaskController extends Controller
     {
           $name = $request->get(key:'name');
           $content = $request->get(key:'content');
+          $priority = $request->get(key:'priority');
 
           $task = new Task();
           $task->name = $name;
           $task->content = $content;
+          $task->priority = $priority;
           $task->status = 1;
           $task->deadline = '2021-5-19 21:50:00';
           $task->save();
@@ -76,7 +78,9 @@ class TaskController extends Controller
     {
         // echo "SHOW ID = " .$id;
         $task = Task::find($id);
-        dd($task);
+        return view('tasks.show', [
+            'list' => $task,
+        ]);
     }
 
     /**
@@ -87,17 +91,27 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        echo "EDIT ID = " .$id;
+        $task = Task::find($id);
+        return view('tasks.form_edit',[
+            'task' => $task,
+        ]);
     }
 
     public function complete($id)
     {
-        echo "COMPLETE TASK ID = " .$id;
+        $task = Task::find($id);
+        $task->status = 2;
+        $task->save();
+        return redirect()->route(route:'task.index');
+        
     }
 
     public function recomplete($id)
     {
-        echo "RECOMPLETE TASK ID = " .$id;
+        $task = Task::find($id);
+        $task->status = 1;
+        $task->save();
+        return redirect()->route(route:'task.index');
     }
 
     /**
@@ -109,7 +123,20 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Lấy dữ liệu từ Form
+        $name = $request->get(key:'name');
+        $content = $request->get(key:'content');
+        $priority = $request->get(key:'priority');
+        // Cập nhật
+        $task = Task::find($id);
+        $task->name = $name;
+        $task->priority = $priority;
+        $task->status = 1;
+        $task->content = $content;
+        $task->deadline = '2021-5-19 21:50:00';
+        $task->save();
+
+        return redirect()->route(route:'task.index');
     }
 
     /**

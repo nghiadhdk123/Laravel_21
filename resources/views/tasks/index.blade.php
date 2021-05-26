@@ -55,25 +55,10 @@
                 <!-- Display Validation Errors -->
 
             <!-- New Task Form -->
-                <form action="{{ route('task.store')}}" method="POST" class="form-horizontal">
+                <form action="{{ route('task.create')}}" method="GET" class="form-horizontal">
                 {{ csrf_field() }}
 
                 <!-- Task Name -->
-                    <div class="form-group">
-                        <label for="task-name" class="col-sm-3 control-label">Tên công việc</label>
-
-                        <div class="col-sm-6">
-                            <input type="text" name="name" id="task-name" class="form-control" value="{{ old('task') }}">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="task-name" class="col-sm-3 control-label">Mô tả</label>
-
-                        <div class="col-sm-6">
-                            <input type="text" name="content" id="task-content" class="form-control" value="{{ old('task') }}">
-                        </div>
-                    </div>
-
                     <!-- Add Task Button -->
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-6">
@@ -87,8 +72,8 @@
         </div>
 
         <!-- Current Tasks -->
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <div class="">
+            <div class="panel-heading" style="text-align:center">
                 Danh sách công việc hiện tại
             </div>
 
@@ -97,6 +82,8 @@
                     <thead>
                     <th>Tên công việc</th>
                     <th>Mô tả</th>
+                    <th>Mức độ ưu tiên</th>
+                    <!-- <th>Status</th> -->
                     <th>&nbsp;</th>
                     </thead>
                     <tbody>
@@ -105,14 +92,57 @@
                         <td class="table-text"><div>{{ $value->name }}</div></td>
                         <td class="table-text"><div>{{ $value->content }}</div></td>
                         <!-- Task Complete Button -->
+                        <!-- <td class="table-text"><div>{{ $value->StatusText }}</div></td> -->
                         <td>
-                            <a href="{{ route('task.complete', ['task'=>200]) }}" type="submit" class="btn btn-success">
-                                <i class="fa fa-btn fa-check"></i>Hoàn thành
+                        <?php
+                            if($value->priority == 0){
+                        ?>
+                            Bình thường
+                        <?php 
+                            }else if($value->priority == 1){
+                        ?>
+                            Quan trọng
+                        <?php
+                            }else{
+                        ?> 
+                            Khẩn cấp
+                        <?php
+                            }
+                        ?>
+                        <td>
+                        <?php
+                            if($value->status == 1){
+                        ?> 
+                        <a href="{{ route('task.complete' , $value->id) }}" type="submit" class="btn btn-success">
+                                <i class="fa fa-btn fa-check"></i>{{ $value->StatusText }}
+                        </a>
+                        <?php
+                            }else{
+                        ?>  
+                        <a href="{{ route('task.recomplete' , $value->id) }}" type="submit" class="btn btn-success">
+                                <i class="fa fa-btn fa-check"></i>{{ $value->StatusText }}
+                            </a>
+                        <?php
+                            }
+                        ?>  
+                        </td>
+                        
+
+                        <td>
+                            <a href="{{ route('task.show', $value->id) }}" type="submit" class="btn btn-success">
+                                <i class="fa fa-btn fa-check"></i>Chi tiet cong viec
                             </a>
                         </td>
+
+                        <td>
+                            <a href="{{ route('task.edit', $value->id) }}" type="submit" class="btn btn-success">
+                                <i class="fa fa-btn fa-check"></i>Update
+                            </a>
+                        </td>
+
                         <!-- Task Delete Button -->
                         <td>
-                            <form action="{{ route('task.destroy', ['task'=>100]) }}" method="POST">
+                            <form action="{ route('task.destroy', $value->id)}" method="POST">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
 
